@@ -1,6 +1,6 @@
 const jwt = require("jsonwebtoken");
 const { SECRET_JWT } = require("../config");
-const ErrorCustom = require("../Utils");
+const ErrorCustom = require("../Utils/error");
 
 const signToken = (userId) => {
   return new Promise((resolve, reject) => {

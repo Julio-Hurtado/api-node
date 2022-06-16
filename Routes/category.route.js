@@ -5,9 +5,10 @@ const {
   getOneById,
   createCategory,
   updateCategory,
+  deleteCategory,
 } = require("../Controllers/category.controller");
 const {isExistCategory, existCategoryId} = require("../Helpers/db_validators");
-const {validateData, isAutenticated} = require("../Middlewares");
+const {validateData, isAutenticated, isAdminRole} = require("../Middlewares");
 
 class CategoryRoutes {
   constructor() {
@@ -40,7 +41,17 @@ class CategoryRoutes {
       ],
       updateCategory
     );
-    this.router.delete("/:id");
+    this.router.delete(
+      "/:id",
+      [
+        isAutenticated,
+        isAdminRole,
+        check("id", "category id is invalid").isMongoId(),
+        check("id").custom(existCategoryId),
+        validateData,
+      ],
+      deleteCategory
+    );
   }
 }
 

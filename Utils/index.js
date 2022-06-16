@@ -1,7 +1,4 @@
-const crypto = require("../Utils/crypto");
-const ErrorCustom = require("../Utils/error");
-
+const crypto = require("./crypto");
 module.exports = {
   ...crypto,
-  ErrorCustom,
 };

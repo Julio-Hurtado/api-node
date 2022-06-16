@@ -1,4 +1,9 @@
 const {Role, Category, User} = require("../Models");
+
+/**
+ *
+ * @validations_user
+ */
 const isValidRole = async (role = "") => {
   if (role === "") throw new Error("role is required");
   const existRole = await Role.findOne({role});
@@ -24,6 +29,11 @@ const isExistUserId = async (id) => {
   }
 };
 
+/**
+ *
+ * @validations_category
+ *
+ */
 const existCategoryId = async (id) => {
   try {
     const errMessage = `this category id ${id} not exist`;
