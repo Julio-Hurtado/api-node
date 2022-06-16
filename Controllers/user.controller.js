@@ -1,6 +1,5 @@
 const Response = require("../Network/response");
 const User = require("../Models/user.model");
-const Role = require("../models/role.model");
 const {ErrorCustom, hashPassword} = require("../Utils");
 
 const getUsers = async (req, res, next) => {
@@ -20,10 +19,7 @@ const getUsers = async (req, res, next) => {
 const saveUser = async (req, res, next) => {
   const {name, email, password, role, image} = req.body;
   const user = new User({name, email, password, role, image});
-  try {  
-    let r= new Role({role:"Sales_Rol"})
-    await r.save()
-    console.log(r)
+  try { 
     user.password = await hashPassword(password);
     const userSaved = await user.save();
     Response.succes(req, res, {user: userSaved}, 201);
