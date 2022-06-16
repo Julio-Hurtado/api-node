@@ -1,10 +1,18 @@
 const {Category} = require("../Models");
 const Response = require("../Network/response");
-const ErrorCustom = require("../Utils/error");
+const ErrorCustom = require("../Utils");
 const getAll = async (req, res, next) => {
   try {
-    const categories = await Category.find().populate("user");
-    Response.succes(req, res, {categories}, 200);
+    const {skip = 0, limit = 5} = req.query;
+    const query = {state: true};
+    const [totalRecords, categories] = await Promise.all([
+      Category.countDocuments(query),
+      Category.find(query)
+        .skip(Number(skip))
+        .limit(Number(limit))
+        .populate("user"),
+    ]);
+    Response.succes(req, res, {totalRecords, categories}, 200);
   } catch (error) {
     next(error);
   }
