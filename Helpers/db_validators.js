@@ -1,6 +1,6 @@
 const Role = require("../models/role.model");
 const User = require("../Models/user.model");
-
+const Category = require("../Models/category.model");
 const isValidRole = async (role = "") => {
   if (role === "") throw new Error("role is required");
   const existRole = await Role.findOne({role});
@@ -14,7 +14,7 @@ const isExistEmail = async (email = "") => {
 };
 
 const isExistUserId = async (id) => {
-  try {    
+  try {
     const errMessage = `this id: ${id} not exist`;
     const existUser = await User.findById(id);
     if (!existUser) throw new Error(errMessage);
@@ -25,8 +25,33 @@ const isExistUserId = async (id) => {
     throw new Error(message);
   }
 };
+
+const existCategoryId = async (id) => {
+  try {
+    const errMessage = `this category id ${id} not exist`;
+    const existCategory = await Category.findById(id);
+    if (!existCategory) throw new Error(errMessage);
+    if (!existCategory.state) throw new Error(errMessage);
+  } catch (error) {
+    const message = error.kind ? `this id: ${id} is wrong cast` : error.message;
+    throw new Error(message);
+  }
+};
+const isExistCategory = async (name) => {
+  try {
+    const param = name.toUpperCase();
+    const existCategory = await Category.findOne({name: param});
+    console.log(existCategory);
+    if (existCategory)
+      throw new Error(`this category: ${name} is already registered`);
+  } catch (error) {
+    throw error;
+  }
+};
 module.exports = {
   isValidRole,
   isExistEmail,
   isExistUserId,
+  isExistCategory,
+  existCategoryId,
 };
