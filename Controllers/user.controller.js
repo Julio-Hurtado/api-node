@@ -1,5 +1,5 @@
 const Response = require("../Network/response");
-const User = require("../Models/user.model");
+const {User} = require("../Models");
 const {ErrorCustom, hashPassword} = require("../Utils");
 
 const getUsers = async (req, res, next) => {

@@ -21,8 +21,9 @@ const CategorySchema = new Schema({
   },
 });
 // CategorySchema.methods.toJSON = function () {
-//   const {__v,createdAt, ...category} = this.toObject();  
+//   const {__v,createdAt, ...category} = this.toObject();
 //   category.createdAt = createdAt.toString();
 //   return category;
 // };
-module.exports = model("Category", CategorySchema);
+const Category = model("Category", CategorySchema);
+module.exports = Category;

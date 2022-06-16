@@ -1,4 +1,4 @@
-const Category = require("../Models/category.model");
+const {Category} = require("../Models");
 const Response = require("../Network/response");
 const ErrorCustom = require("../Utils/error");
 const getAll = async (req, res, next) => {
@@ -12,7 +12,6 @@ const getAll = async (req, res, next) => {
 const getOneById = async (req, res, next) => {
   try {
     const {id} = req.params;
-    console.log(id);
     const category = await Category.findById(id).populate("user");
     if (!category) throw new ErrorCustom("Category not found", 404);
     Response.succes(req, res, category, 200);
