@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const {PORT} = require("../config");
 const {dbConnect} = require("../Database/config");
-const ErrorCustom = require("../Utils/error");
+const ErrorCustom = require("../Utils");
 const {authRoutes, userRoutes,categoryRoutes} = require("../Routes");
 const { globalErrors } = require("../Middlewares");
 

@@ -1,7 +1,7 @@
 const {signToken} = require("../Helpers/generate_jwt");
 const {User} = require("../Models");
 const Response = require("../Network/response");
-const {comparePassword} = require("../Utils/crypto");
+const {comparePassword} = require("../Utils");
 const ErrorCustom = require("../Utils/error");
 
 const login = async (req, res, next) => {
