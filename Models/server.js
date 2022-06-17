@@ -3,8 +3,13 @@ const cors = require("cors");
 const {PORT} = require("../config");
 const {dbConnect} = require("../Database/config");
 const ErrorCustom = require("../Utils");
-const {authRoutes, userRoutes,categoryRoutes} = require("../Routes");
-const { globalErrors } = require("../Middlewares");
+const {
+  authRoutes,
+  userRoutes,
+  categoryRoutes,
+  productRoutes,
+} = require("../Routes");
+const {globalErrors} = require("../Middlewares");
 
 module.exports = class Server {
   #app;
@@ -21,9 +26,10 @@ module.exports = class Server {
   #routes() {
     this.#app.use(`${this.#path}/auth`, authRoutes);
     this.#app.use(`${this.#path}/categories`, categoryRoutes);
+    this.#app.use(`${this.#path}/products`, productRoutes);
     this.#app.use(`${this.#path}/user`, userRoutes);
     this.#app.all("*", (req, res, next) => {
-      console.log(req.originalUrl)
+      console.log(req.originalUrl);
       next(new ErrorCustom("resource not found", 404));
     });
     this.#app.use(globalErrors);

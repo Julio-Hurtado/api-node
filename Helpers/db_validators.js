@@ -1,4 +1,4 @@
-const {Role, Category, User} = require("../Models");
+const {Role, Category, User, Product} = require("../Models");
 
 /**
  *
@@ -56,10 +56,37 @@ const isExistCategory = async (name) => {
     throw error;
   }
 };
+
+const isExistProductId = async (id) => {
+  try {
+    const errMessage = `this product id ${id} not exist`;
+    const productId = await Product.findById(id);
+    if (!productId) throw new Error(errMessage);
+    if (!productId.state) throw new Error(errMessage);
+    if (!productId.available) throw new Error("product not available");
+  } catch (error) {
+    const message = error.kind ? `this id: ${id} is wrong cast` : error.message;
+    throw new Error(message);
+  }
+};
+
+const isExistProduct = async (name) => {
+  try {
+    const param = name.toUpperCase();
+    const existProduct = await Product.findOne({name: param});
+    console.log(existProduct);
+    if (existProduct)
+      throw new Error(`this Product: ${name} is already registered`);
+  } catch (error) {
+    throw error;
+  }
+};
 module.exports = {
   isValidRole,
   isExistEmail,
   isExistUserId,
   isExistCategory,
   existCategoryId,
+  isExistProductId,
+  isExistProduct,
 };
