@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const {PORT} = require("../config");
 const {dbConnect} = require("../Database/config");
-const ErrorCustom = require("../Utils");
+const ErrorCustom = require("../Utils/error");
 const {
   authRoutes,
   userRoutes,
@@ -22,7 +22,14 @@ module.exports = class Server {
     this.#middlewares();
     this.#routes();
   }
-
+  connectionDB() {
+    dbConnect();
+  }
+  #middlewares() {
+    this.#app.use(express.json());
+    this.#app.use(express.urlencoded({extended: false}));
+    this.#app.use(cors());
+  }
   #routes() {
     this.#app.use(`${this.#path}/auth`, authRoutes);
     this.#app.use(`${this.#path}/categories`, categoryRoutes);
@@ -34,15 +41,6 @@ module.exports = class Server {
     });
     this.#app.use(globalErrors);
   }
-  connectionDB() {
-    dbConnect();
-  }
-  #middlewares() {
-    this.#app.use(express.json());
-    this.#app.use(express.urlencoded({extended: false}));
-    this.#app.use(cors());
-  }
-
   listen() {
     this.#app.listen(this.port, () => {
       console.log(`api listening in http://localhost:${this.port}`);
