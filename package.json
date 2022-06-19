@@ -24,6 +24,10 @@
     "api",
     "jwt"
   ],
-  "author": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Julio-Hurtado/api-node.git"
+  },
+  "author": "Julio-Hurtado",
   "license": "ISC"
 }
