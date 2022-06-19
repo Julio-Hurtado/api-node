@@ -1,8 +1,4 @@
 node_modules/
 .env
-<<<<<<< HEAD
-role.txt
-=======
 role.txt
 config/index.js
->>>>>>> development
