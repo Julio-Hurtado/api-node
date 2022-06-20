@@ -37,8 +37,37 @@ const createProduct = async (req, res, next) => {
     next(error);
   }
 };
+
+const updateProduct = async (req, res, next) => {
+  try {
+    const {id} = req.params;
+    const {state, available, user, ...update} = req.body;
+    update.name = update.name.toUpperCase();
+    update.user = req.userAuth._id;
+    const productUpdated = await Product.findByIdAndUpdate(id, update, {
+      new: true,
+    });
+    Response.succes(req, res, {productUpdated}, 200);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteProduct = async (req, res, next) => {
+  try {
+    const {id} = req.params;
+    const update = {state: false};
+    const options = {new: true};
+    const productDeleted = await Product.findByIdAndUpdate(id, update, options);
+    Response.succes(req, res, {productDeleted}, 200);
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   getAllProducts,
   getProductById,
   createProduct,
+  updateProduct,
+  deleteProduct,
 };

@@ -17,6 +17,10 @@ const ProductSchema = new Schema({
     required: [true, "user id is required"],
   },
   description: {type: String},
+  price: {
+    type: Number,
+    default: 0,
+  },
   state: {
     type: Boolean,
     default: true,
