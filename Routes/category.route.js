@@ -7,7 +7,7 @@ const {
   updateCategory,
   deleteCategory,
 } = require("../Controllers/category.controller");
-const {isExistCategory, existCategoryId} = require("../Helpers/db_validators");
+const {isExistCategory, existCategoryId, isSameCategory} = require("../Helpers/db_validators");
 const {validateData, isAutenticated, isAdminRole} = require("../Middlewares");
 
 class CategoryRoutes {
@@ -28,7 +28,13 @@ class CategoryRoutes {
     );
     this.router.post(
       "/",
-      [isAutenticated, check("name").custom(isExistCategory), validateData],
+      [
+        isAutenticated,
+        check("name", "category name is required").not().isEmpty(),
+        validateData,        
+        check("name").custom(isExistCategory),
+        validateData,
+      ],
       createCategory
     );
     this.router.put(
@@ -36,8 +42,11 @@ class CategoryRoutes {
       [
         isAutenticated,
         check("id", "category id is invalid").isMongoId(),
+        check("name", "category name is required").not().isEmpty(),
+        validateData,
         check("id").custom(existCategoryId),
         validateData,
+        isSameCategory,
       ],
       updateCategory
     );
