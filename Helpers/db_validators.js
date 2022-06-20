@@ -1,4 +1,5 @@
 const {Role, Category, User, Product} = require("../Models");
+const ErrorCustom = require("../Utils/error");
 
 /**
  *
@@ -49,14 +50,32 @@ const isExistCategory = async (name) => {
   try {
     const param = name.toUpperCase();
     const existCategory = await Category.findOne({name: param});
-    console.log(existCategory);
     if (existCategory)
       throw new Error(`this category: ${name} is already registered`);
   } catch (error) {
     throw error;
   }
 };
-
+const isSameCategory = async (req, res, next) => {
+  const {id} = req.params;
+  const {name} = req.body;
+  let param = name.toUpperCase();
+  const existCategory = await Category.findOne({name: param});
+  if (!existCategory) {
+    next();
+  } else {
+    existCategory._id.toString() === id.toString()
+      ? next()
+      : next(
+          new ErrorCustom(`this Category: ${name} has already registered`, 409)
+        );
+  }
+};
+/**
+ *
+ * @validations_product
+ *
+ */
 const isExistProductId = async (id) => {
   try {
     const errMessage = `this product id ${id} not exist`;
@@ -74,11 +93,25 @@ const isExistProduct = async (name) => {
   try {
     const param = name.toUpperCase();
     const existProduct = await Product.findOne({name: param});
-    console.log(existProduct);
     if (existProduct)
       throw new Error(`this Product: ${name} is already registered`);
   } catch (error) {
     throw error;
+  }
+};
+const isSameProduct = async (req, res, next) => {
+  const {id} = req.params;
+  const {name} = req.body;
+  let param = name.toUpperCase();
+  const existProduct = await Product.findOne({name: param});
+  if (!existProduct) {
+    next();
+  } else {
+    existProduct._id.toString() === id.toString()
+      ? next()
+      : next(
+          new ErrorCustom(`this Product: ${name} has already registered`, 409)
+        );
   }
 };
 module.exports = {
@@ -87,6 +120,8 @@ module.exports = {
   isExistUserId,
   isExistCategory,
   existCategoryId,
+  isSameCategory,
   isExistProductId,
   isExistProduct,
+  isSameProduct,
 };
