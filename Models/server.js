@@ -8,6 +8,7 @@ const {
   userRoutes,
   categoryRoutes,
   productRoutes,
+  searchRoutes,
 } = require("../Routes");
 const {globalErrors} = require("../Middlewares");
 
@@ -34,6 +35,7 @@ module.exports = class Server {
     this.#app.use(`${this.#path}/auth`, authRoutes);
     this.#app.use(`${this.#path}/categories`, categoryRoutes);
     this.#app.use(`${this.#path}/products`, productRoutes);
+    this.#app.use(`${this.#path}/search`, searchRoutes);
     this.#app.use(`${this.#path}/user`, userRoutes);
     this.#app.all("*", (req, res, next) => {
       console.log(req.originalUrl);
