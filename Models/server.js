@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors");
+const fileUpload = require("express-fileupload");
 const {PORT} = require("../config");
 const {dbConnect} = require("../Database/config");
 const ErrorCustom = require("../Utils/error");
@@ -9,6 +10,7 @@ const {
   categoryRoutes,
   productRoutes,
   searchRoutes,
+  uploadRoutes,
 } = require("../Routes");
 const {globalErrors} = require("../Middlewares");
 
@@ -30,6 +32,14 @@ module.exports = class Server {
     this.#app.use(express.json());
     this.#app.use(express.urlencoded({extended: false}));
     this.#app.use(cors());
+    //manage fileUpload
+    this.#app.use(
+      fileUpload({
+        createParentPath:true,
+        useTempFiles: true,
+        tempFileDir: "/temp/",
+      })
+    );
   }
   #routes() {
     this.#app.use(`${this.#path}/auth`, authRoutes);
@@ -37,6 +47,8 @@ module.exports = class Server {
     this.#app.use(`${this.#path}/products`, productRoutes);
     this.#app.use(`${this.#path}/search`, searchRoutes);
     this.#app.use(`${this.#path}/user`, userRoutes);
+    this.#app.use(`${this.#path}/uploads`, uploadRoutes);
+
     this.#app.all("*", (req, res, next) => {
       console.log(req.originalUrl);
       next(new ErrorCustom("resource not found", 404));
