@@ -114,6 +114,21 @@ const isSameProduct = async (req, res, next) => {
         );
   }
 };
+
+/**
+ * validation before to upload file
+ * @param {name_collection} collection
+ * @param {array collections available} avbCollections
+ * @returns true or Error
+ */
+
+const collectionsAvailable = (collection, avbCollections = []) => {
+  const include = avbCollections.includes(collection);
+  if (!include) {
+    throw new Error(`Collection ${collection} is not available`);
+  }
+  return true;
+};
 module.exports = {
   isValidRole,
   isExistEmail,
@@ -124,4 +139,5 @@ module.exports = {
   isExistProductId,
   isExistProduct,
   isSameProduct,
+  collectionsAvailable,
 };
