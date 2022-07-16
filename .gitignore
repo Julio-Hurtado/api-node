@@ -3,4 +3,5 @@ node_modules/
 role.txt
 config/index.js
 .vscode/
-uploads/
+uploads/products/
+uploads/user/
